@@ -1,0 +1,58 @@
+# ==============================================================
+# Módulo INVESTIGACIÓN — versión 1
+#
+#   API INVESTIGACIÓN (FastAPI, :8025) ──→ PostgreSQL (:15440)
+#
+# TODO el sistema está declarado aquí. Un solo comando lo levanta:
+#
+#     docker compose up -d --build
+#
+# No hay que instalar Python, ni PostgreSQL, ni nada: solo Docker.
+# ==============================================================
+
+services:
+
+  # --- La base de datos ---------------------------------------------
+  postgres:
+    image: postgres:16
+    container_name: paradigmas-investigacion-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: investigacion
+      POSTGRES_PASSWORD: Investigacion123!
+      POSTGRES_DB: investigacion_local
+    ports:
+      - "15440:5432"          # para DBeaver o pgAdmin, opcional
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # PostgreSQL ejecuta SOLO lo que encuentre aquí, y SOLO la primera vez
+      # (cuando el volumen está vacío). Por eso no hace falta un contenedor
+      # inicializador: el motor se encarga.
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      # La API arranca cuando la base RESPONDE, no cuando el contenedor existe
+      test: ["CMD-SHELL", "pg_isready -U investigacion -d investigacion_local"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # --- La API: FastAPI ----------------------------------------------
+  api-investigacion:
+    build: ./api_investigacion
+    container_name: paradigmas-investigacion-api
+    restart: unless-stopped
+    command: uvicorn main:app --host 0.0.0.0 --port 8025 --reload
+    ports:
+      - "8025:8025"           # el MISMO número adentro y afuera
+    volumes:
+      - ./api_investigacion:/app   # el código montado: guardar un .py recarga solo
+    environment:
+      # El host es el NOMBRE del servicio (postgres), nunca localhost: dentro
+      # de un contenedor, localhost es él mismo.
+      DB_POSTGRES: postgresql+asyncpg://investigacion:Investigacion123!@postgres:5432/investigacion_local
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:                     # la "memoria" de la base entre reinicios
