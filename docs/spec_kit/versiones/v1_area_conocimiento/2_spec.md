@@ -95,8 +95,7 @@ otros nombres.
 
 ## 5. Criterios de aceptación
 
-1. **Un solo comando.** `docker compose up -d --build` deja corriendo SQL
-   Server —con la base creada, sus 19 tablas y **218 filas** en
+1. **Un solo comando.** `docker compose up -d --build` deja corriendo PostgreSQL —con la base creada, sus 19 tablas y **218 filas** en
    `area_conocimiento`— y la API. `GET http://localhost:8025/` responde el
    diagnóstico con `"version":"v1"`.
 2. **Listar.** `GET /api/area_conocimiento` devuelve

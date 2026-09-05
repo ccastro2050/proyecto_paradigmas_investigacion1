@@ -100,10 +100,10 @@ curl -i -X DELETE http://localhost:8025/api/area_conocimiento/9Z01
 #    → 404: para la API ya no existe
 
 #    …pero la fila SIGUE en la base. Comprobarlo:
-docker compose exec postgres bash -c '/opt/mssql-tools18/bin/sqlcmd `
-  -S localhost -U sa -P "$MSSQL_SA_PASSWORD" -C -d investigacion_local `
-  -Q "SELECT id, activo FROM area_conocimiento WHERE id = ''9Z01''"'
-#    → 9Z01 | 0
+docker compose exec postgres `
+  psql -U investigacion -d investigacion_local `
+  -c "SELECT id, activo FROM area_conocimiento WHERE id = '9Z01'"
+#    → 9Z01 | f   ← sigue ahí, con activo en falso
 
 # 6. La validación es la frontera: nada de esto llega a la base
 curl -i -X POST http://localhost:8025/api/area_conocimiento `
