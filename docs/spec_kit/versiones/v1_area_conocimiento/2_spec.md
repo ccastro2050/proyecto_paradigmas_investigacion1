@@ -33,7 +33,8 @@ otros nombres.
 - Claves foráneas, listas desplegables ni integridad referencial: eso es
   la v2.
 - Autenticación, JWT, roles ni usuarios: eso es la v3.
-- Frontend, dashboard ni consultas multitabla: eso es la v4.
+- Dashboard ni consultas multitabla: eso es la v4.
+- Más pantallas que la de `area_conocimiento`: las demás tablas llegan en la v2, cada una con la suya.
 - **Reactivar** un registro inactivo (`activo = TRUE`). Nadie lo pidió; si
   hace falta, se especifica en una versión posterior.
 - Búsqueda por texto, ordenamiento ni paginación con desplazamiento: el

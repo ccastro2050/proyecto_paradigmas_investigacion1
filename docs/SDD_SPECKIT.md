@@ -294,7 +294,7 @@ impide avanzar con una fase rota — es la versión artesanal del grafo de
 dependencias que `/speckit.tasks` genera.
 **Cómo se hace:** ordene de lo que no depende de nada hacia lo que depende
 de todo (modelo → repositorio → servicio → controlador); cada fase termina
-en un estado COMPROBABLE (`dotnet build`); la verificación se escribe
+en un estado COMPROBABLE (que la API arranque y responda); la verificación se escribe
 como comando concreto, no como "revisar que funcione".
 
 **Esqueleto:** `Fase 0` … `Fase N`, cada una con: casillas `- [ ]` por
@@ -308,7 +308,7 @@ La última fase es siempre el cierre: regresión, criterios y tag.
 - [ ] Modelos/AreaConocimiento.py (la entidad: 4 propiedades tipadas)
 - [ ] Peticiones/AreaConocimientoCrear.py (todo obligatorio, con [Required])
 
-**Verificar:** `dotnet build` compila sin errores.
+**Verificar:** `python -c "import main"` no falla, o la API arranca.
 ```
 
 ### 2.2 El orden de armado y las tres compuertas

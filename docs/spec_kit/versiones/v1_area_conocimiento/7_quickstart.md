@@ -137,3 +137,40 @@ todos deben seguir pasando antes de cerrar la nueva.
 | El contenedor de PostgreSQL se reinicia solo | Contraseña que no cumple la política (8+ caracteres, mayúscula, minúscula, dígito y símbolo) o poca memoria: pide ~2 GB |
 | Un inactivo aparece en el listado | A alguna consulta le falta `WHERE activo = TRUE` ([3_plan](3_plan.md) §4.2) |
 | `bad interpreter: /bin/bash^M` | `db/init.sh` se guardó con finales de línea de Windows. Es lo que previene `*.sh text eol=lf` en `.gitattributes` |
+
+---
+
+## La pantalla
+
+```powershell
+python pruebas_humo/humo_front.py
+```
+
+Recorre todo: que cada pantalla responda por su dirección, que la hoja de
+estilos llegue, que no haya jerga, el ciclo completo con los dos botones de
+guardar, y **la prueba de apagar la API**.
+
+> Con formularios corrientes el guion llega hasta el final: cada botón manda
+> un POST que se puede enviar desde fuera del navegador. Lo que no puede
+> juzgar es si la pantalla **se entiende** — eso es el recorrido a mano.
+
+### A mano, que es lo que un guion no ve
+
+1. Abra <http://localhost:8078> y use el sistema: agregue una
+   ficha, edítela con los dos botones, retírela.
+2. **Los dos botones.** Entre a editar y borre un campo obligatorio:
+   - con **«Guardar la ficha completa»** → lo rechaza, y el motivo está en
+     español;
+   - con **«Guardar solo lo que cambié»**, dejando solo otro campo → guarda,
+     y lo que no envió **no se borró**.
+3. **La prueba de los dos procesos.** Con la base de datos encendida, apague
+   solo la API:
+
+   ```powershell
+   docker compose stop api-investigacion
+   ```
+
+   Refresque. La pantalla sigue en pie, con su menú y un aviso de que el
+   servicio no está disponible — **y sin una sola fila**. Los datos siguen
+   ahí, a un puerto de distancia; si aparecieran, sería porque el front llegó
+   a la base por su cuenta.
