@@ -181,11 +181,11 @@ Invoke-RestMethod -Method Patch -Uri "http://localhost:8025/api/area_conocimient
 Invoke-RestMethod -Method Delete -Uri "http://localhost:8025/api/area_conocimiento/PR009"
 ```
 
-> Si está probando **SU reconstrucción** (la de la [GUIA_IA](GUIA_IA.md),
+> Si está probando **SU reconstrucción** (la de la [GUIA_IA1](spec_kit/versiones/v1_area_conocimiento/GUIA_IA1.md),
 > que corre con puertos +100): cambie `8025` por `8105`.
 
 La pareja PUT/PATCH con el mismo body es la lección más importante del
 flujo: el MISMO dato, dos verbos, dos resultados — porque cada verbo tiene
 su semántica y la API la hace cumplir. Y todo esto también se puede recorrer
 con clics en **http://localhost:8025/docs** (Swagger) o con la colección de
-[postman/](../postman/README.md).
+[postman/investigacion_v1.postman_collection.json](../postman/investigacion_v1.postman_collection.json).
